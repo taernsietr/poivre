@@ -1,8 +1,7 @@
 use std::fmt::Debug;
 use leptos::*;
 use leptos_router::*;
-use crate::resources::Item;
-use crate::db::{DB,queries::*};
+use crate::resources::items::Item;
 
 #[derive(Params, PartialEq)]
 struct ItemParams {
@@ -17,7 +16,6 @@ pub fn TableRow(row: Item) -> impl IntoView {
             <td>{ row.id()          }</td>
             <td>{ row.name()        }</td>
             <td>{ row.category()    }</td>
-            <td>{ row.description() }</td>
             <td>{ row.descriptors() }</td>
         </tr>
     }
@@ -36,7 +34,6 @@ pub fn ItemTable() -> impl IntoView {
                     <th>ID</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Description</th>
                     <th>Descriptors</th>
                 </tr>
                 {
@@ -70,8 +67,7 @@ pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
         )
     };
 
-    let mut response = DB.query(GET_ITEM_BY_ID).bind(("id",id())).await?;
-    response.take::<Option<Item>>(0)?.ok_or(ServerFnError::ServerError("Entry not found".into()))
+    db.get_item_by_id(id())
 }
 
 #[component]

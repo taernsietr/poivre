@@ -1,27 +1,10 @@
-use std::fmt::{Display, Result, Formatter};
 use serde::{Serialize,Deserialize};
+use super::category::Category;
 
 #[derive(Clone,Serialize,Deserialize,PartialEq)]
 pub enum Name {
     SingleName(String),
     MultipleName(Vec<String>)
-}
-
-#[derive(Clone,Serialize,Deserialize,PartialEq)]
-pub enum Category {
-    Ingredient,
-    Dish,
-    Beverage,
-}
-
-impl Display for Category {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        match self {
-            Category::Ingredient => write!(f, "Ingredient"),
-            Category::Dish => write!(f, "Dish"),
-            Category::Beverage => write!(f, "Beverage"),
-        }
-    }
 }
 
 #[derive(Clone,Serialize,Deserialize,PartialEq)]
@@ -34,18 +17,23 @@ pub struct Item {
     descriptors: Vec<String>,
 }
 
+pub struct ItemChanges;
+
 impl Item {
     pub fn id(&self) -> String { self.id.clone() }
     pub fn image(&self) -> String { self.image.clone() }
     pub fn category(&self) -> String { self.category.to_string() }
     pub fn description(&self) -> String { self.description.clone() }
     pub fn descriptors(&self) -> String { self.descriptors.clone().join(", ") }
+    /// Returns the name(s) for the item as a string. If there are multiple names, they are joined
+    /// into a single string, separated by spaced commas.
     pub fn name(&self) -> String {
         match &self.name {
             Name::SingleName(name) => name.clone(),
             Name::MultipleName(name) => name.clone().join(", ")
         }
     }
+
     pub fn new(
         id: impl Into<String>,
         name: Name,

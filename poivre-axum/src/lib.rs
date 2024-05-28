@@ -1,6 +1,7 @@
 pub mod app;
 pub mod error_template;
 pub mod resources;
+pub mod pages;
 pub mod components;
 pub mod db;
 

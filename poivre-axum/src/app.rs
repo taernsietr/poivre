@@ -1,13 +1,17 @@
-use crate::error_template::{AppError, ErrorTemplate};
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-use crate::components::{
-    home::Home,
-    admin::Admin,
-    items::{ItemTable, ItemDescription},
-    users::{Users, UserProfile},
+use crate::error_template::{AppError, ErrorTemplate};
+use crate::{
+    pages::{
+        home::Home,
+        admin::Admin
+    },
+    components::{
+        items::{ItemTable, ItemDescription},
+        users::{Users, UserProfile},
+    }
 };
 
 #[component]
