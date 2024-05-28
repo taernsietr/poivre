@@ -5,10 +5,10 @@ async fn main() {
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use poivre_axum::app::*;
-    use poivre_axum::db;
+    use poivre_axum::db::setup::*;
     use poivre_axum::fileserv::file_and_error_handler;
     
-    db::initialize_database().await;
+    db::setup::initialize_database().await;
 
     let conf = get_configuration(None).await.unwrap();
     let leptos_options = conf.leptos_options;

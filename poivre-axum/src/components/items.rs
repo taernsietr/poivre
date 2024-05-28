@@ -1,13 +1,18 @@
 use std::fmt::Debug;
 use leptos::*;
 use leptos_router::*;
-use crate::resources::items::Item;
+use wasm_bindgen::UnwrapThrowExt;
+use crate::{
+    resources::items::Item,
+    db::queries
+};
 
 #[derive(Params, PartialEq)]
 struct ItemParams {
     pub id: Option<String>
 }
 
+/// A table row for the list of items queried from the database.
 #[component]
 pub fn TableRow(row: Item) -> impl IntoView {
     view! {
@@ -21,6 +26,7 @@ pub fn TableRow(row: Item) -> impl IntoView {
     }
 }
 
+/// The table for the list of items queried from the database.
 #[component]
 pub fn ItemTable() -> impl IntoView {
     let (table, _set_table) = create_signal(());
@@ -49,6 +55,7 @@ pub fn ItemTable() -> impl IntoView {
     }
 }
 
+/// Server endpoint for returning all database items (debugging purposes only).
 #[server(GetAllItems)]
 pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
     Result::Ok(Item::mock_item_list())
@@ -67,9 +74,13 @@ pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
         )
     };
 
-    db.get_item_by_id(id())
+    let id = id().unwrap_throw();
+
+    queries::get_item_by_id(id)
+        .await
 }
 
+/// Item description card, showing all possible information for a selected item.
 #[component]
 pub fn ItemDescription() -> impl IntoView {
     todo!()

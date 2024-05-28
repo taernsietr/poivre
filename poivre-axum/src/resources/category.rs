@@ -2,7 +2,7 @@ use std::fmt::{Display, Result, Formatter};
 use std::str::FromStr;
 use serde::{Serialize,Deserialize};
 
-struct ParseCategoryError;
+pub struct ParseCategoryError;
 
 #[derive(Clone,Serialize,Deserialize,PartialEq)]
 pub enum Category {
