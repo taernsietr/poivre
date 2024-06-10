@@ -15,9 +15,8 @@ pub struct Item {
     category: Category,
     description: String,
     descriptors: Vec<String>,
+    associated_cuisines: Vec<String>
 }
-
-pub struct ItemChanges;
 
 impl Item {
     pub fn id(&self) -> String { self.id.clone() }
@@ -40,7 +39,8 @@ impl Item {
         image: impl Into<String>,
         category: Category,
         description: impl Into<String>,
-        descriptors: Vec<impl Into<String>>
+        descriptors: Vec<impl Into<String>>,
+        associated_cuisines: Vec<impl Into<String>>
     ) -> Item {
         Item {
             id: id.into(),
@@ -48,7 +48,8 @@ impl Item {
             image: image.into(),
             category,
             description: description.into(),
-            descriptors: descriptors.into_iter().map(|tag| tag.into()).collect::<_>()
+            descriptors: descriptors.into_iter().map(|descriptor| descriptor.into()).collect::<_>(),
+            associated_cuisines: associated_cuisines.into_iter().map(|cuisine| cuisine.into()).collect::<_>()
         }
     }
 
@@ -60,7 +61,8 @@ impl Item {
                 "some/url",
                 Category::Ingredient,
                 "A sweet fruit, usually red.",
-                vec!("fruit", "sweet", "aromatic")
+                vec!("fruit", "sweet", "aromatic"),
+                vec!("")
             ),
             Item::new(
                 "0000000001",
@@ -68,7 +70,8 @@ impl Item {
                 "some/url",
                 Category::Ingredient,
                 "A sweet fruit, yellow, with a thick peel.",
-                vec!("fruit", "sweet", "aromatic")
+                vec!("fruit", "sweet", "aromatic"),
+                vec!("")
             )
         )
     }

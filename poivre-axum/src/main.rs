@@ -5,10 +5,14 @@ async fn main() {
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use poivre_axum::app::*;
-    use poivre_axum::db::setup::*;
+    use poivre_axum::db::setup::{
+        connect_database,
+        setup_database
+    };
     use poivre_axum::fileserv::file_and_error_handler;
     
-    db::setup::initialize_database().await;
+    connect_database().await;
+    setup_database().await;
 
     let conf = get_configuration(None).await.unwrap();
     let leptos_options = conf.leptos_options;
@@ -21,7 +25,7 @@ async fn main() {
         .with_state(leptos_options);
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-    logging::log!("listening on http://{}", &addr);
+    logging::log!("[poivre-axum] Listening on http://{}", &addr);
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();

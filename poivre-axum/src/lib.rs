@@ -4,6 +4,7 @@ pub mod resources;
 pub mod pages;
 pub mod components;
 pub mod db;
+pub mod helpers;
 
 #[cfg(feature = "ssr")]
 pub mod fileserv;
