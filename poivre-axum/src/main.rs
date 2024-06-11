@@ -25,7 +25,7 @@ async fn main() {
         .with_state(leptos_options);
 
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
-    logging::log!("[poivre-axum] Listening on http://{}", &addr);
+    logging::log!("[{}] [poivre-axum] Listening on http://{}", chrono::Local::now().format("%H:%M:%S"), &addr);
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();

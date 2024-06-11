@@ -11,8 +11,8 @@ use crate::{
         signup::SignupForm
     },
     components::{
-        items::{ItemTable, ItemDescription},
-        users::{UserTable, UserProfile},
+        items::ItemDescription,
+        users::UserProfile,
         elements::Navbar
     }
 };
@@ -33,26 +33,24 @@ pub fn App() -> impl IntoView {
             }
             .into_view()
         }>
-            <div class="mx-24 mt-8 bg-black-500">
+            <div class="h-screen max-w-[1920px] border-4 border-solid bg-orange-950 flex flex-col mx-auto mt-24">
                 <Navbar />
-                <main class="bg-orange-500">
-                    <header>
-                        <hgroup class="mx-auto my-4">
+                <main class="flex flex-col border-4 border-solid bg-orange-300 m-4">
+                    <header class="place-self-center">
+                        <hgroup>
                             <h1 class="text-lg font-medium">"Poivre"</h1>
-                            <sub><i>"['pwa.vR]"</i></sub>
-                            <p>"A platform for mapping culinary preferences"</p>
+                            <sub><i>"['pwa.vʀ]"</i></sub>
+                            <p>"A platform for mapping culinary preferences and restrictions"</p>
                         </hgroup>
                     </header>
-                    <div class="m-6 p-6 flex flex-col">
+                    <div class="flex flex-col border-4 border-solid m-8 p-8">
                         <Routes>
                             <Route path="/" view=Home />
                             <Route path="/admin" view=Admin />
                             <Route path="/signup" view=SignupForm />
                             <Route path="/login" view=LoginForm />
-                            <Route path="/items" view=ItemTable />
-                            <Route path="/items/:id" view=ItemDescription />
-                            <Route path="/users" view=UserTable/>
-                            <Route path="/users/:id" view=UserProfile />
+                            <Route path="/item/:id" view=ItemDescription />
+                            <Route path="/user/:id" view=UserProfile />
                         </Routes>
                     </div>
                 </main>

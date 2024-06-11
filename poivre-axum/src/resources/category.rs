@@ -4,7 +4,7 @@ use serde::{Serialize,Deserialize};
 
 pub struct ParseCategoryError;
 
-#[derive(Clone,Serialize,Deserialize,PartialEq)]
+#[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub enum Category {
     Ingredient,
     Dish,

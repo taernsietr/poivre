@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_meta::Title;
 use leptos_router::{A, ActionForm};
 use crate::db::setup;
 use crate::resources::users::User;
@@ -11,8 +12,9 @@ pub fn SignupForm() -> impl IntoView {
     let _has_error = move || value.with(|val| matches!(val, Some(Err(_))));
 
     view! {
+        <Title text="Poivre - Sign Up"/>
         <ActionForm action=signup>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Username: "
                 <input 
                     type="text"
@@ -20,7 +22,7 @@ pub fn SignupForm() -> impl IntoView {
                     autocomplete="off"
                     name="username" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "e-mail: "
                 <input
                     type="email"
@@ -28,7 +30,7 @@ pub fn SignupForm() -> impl IntoView {
                     autocomplete="off"
                     name="email" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Password: "
                 <input
                     type="password"
@@ -36,7 +38,7 @@ pub fn SignupForm() -> impl IntoView {
                     autocomplete="off"
                     name="password" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "First name: "
                 <input
                     type="text"
@@ -44,7 +46,7 @@ pub fn SignupForm() -> impl IntoView {
                     autocomplete="off"
                     name="first_name" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Last name: "
                 <input
                     type="text"
@@ -52,7 +54,7 @@ pub fn SignupForm() -> impl IntoView {
                     autocomplete="off"
                     name="last_name" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Date of Birth: "
                 <input
                     type="date"
@@ -75,15 +77,17 @@ pub async fn sign_up(
     password: String,
     first_name: String,
     last_name: String,
-    birth_year: String
+    date_of_birth: String
     ) -> Result<(), ServerFnError> {
+        // TODO: handle profile image - user may or may not supply one
         let signup = User::new(
+            None,
             username,
             email,
             password,
             first_name,
             last_name,
-            birth_year
+            date_of_birth 
         )?;
 
         let response: Vec<User> = setup::SURREALDB

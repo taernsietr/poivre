@@ -10,55 +10,6 @@ struct ItemParams {
     pub id: Option<String>
 }
 
-/// A table row for the list of items queried from the database.
-#[component]
-pub fn TableRow(row: Item) -> impl IntoView {
-    view! {
-        <tr>
-            <td>{ row.image()       }</td>
-            <td>{ row.id()          }</td>
-            <td>{ row.name()        }</td>
-            <td>{ row.category()    }</td>
-            <td>{ row.descriptors() }</td>
-        </tr>
-    }
-}
-
-/// The table for the list of items queried from the database.
-#[component]
-pub fn ItemTable() -> impl IntoView {
-    let (table, _set_table) = create_signal(());
-    let resource = Resource::new(move || table, |_| get_all_items());
-
-    view! {
-        <Suspense fallback=move || view! { "<p>No data loaded!</p>" }>
-            <table>
-                <tr>
-                    <th>Image</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Descriptors</th>
-                </tr>
-                {
-                    move || resource.get()
-                        .map(|data| {
-                            data.unwrap()
-                                .iter()
-                                .map(|row| view! { <TableRow row=row.clone() /> }).collect_view()
-                        })
-                }
-            </table>
-        </Suspense>
-    }
-}
-
-/// Server endpoint for returning all database items (debugging purposes only).
-#[server(GetAllItems)]
-pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
-    Result::Ok(Item::mock_item_list())
-}
-
 #[server(GetItem, "/internal")]
 pub async fn get_item() -> Result<Item, ServerFnError> {
     let params = use_params::<ItemParams>();

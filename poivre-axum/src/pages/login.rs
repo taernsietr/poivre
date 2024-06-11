@@ -8,21 +8,21 @@ pub fn LoginForm() -> impl IntoView {
     view! {
         <Title text="Poivre - Login"/>
         <form method="POST">
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Username: "
                 <input
                     type="text"
                     placeholder="username"
                     name="user-login" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Password: "
                 <input
                     type="password"
                     placeholder="password"
                     name="user-password" />
             </label>
-            <label class="m-6 p-6 flex-auto">
+            <label class="m-4 p-4 flex-auto">
                 "Remember Login?"
                 <input
                     type="checkbox"

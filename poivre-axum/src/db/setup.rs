@@ -1,3 +1,4 @@
+use leptos::logging;
 use surrealdb::Surreal;
 use surrealdb::opt::auth::Root;
 use surrealdb::engine::remote::ws::{Client,Ws};
@@ -6,26 +7,27 @@ use once_cell::sync::Lazy;
 /// Initiate a SurrealDB Client statically, so it can be accessed globally. The actual connection
 /// is made in connect_database.
 pub static SURREALDB: Lazy<Surreal<Client>> = Lazy::new(Surreal::init);
+const DATE_FORMAT: &str = "%H:%M:%S";
 
 /// Connect to the SurrealDB database. TODO: move ip elsewhere and set up dev/prod settings
 pub async fn connect_database() { 
     match SURREALDB
         .connect::<Ws>("127.0.0.1:8000")
         .await {
-            Ok(()) => println!("[poivre-axum] Connected to SurrealDB."),
-            Err(e) => println!("[poivre-axum] Unable to connect to SurrealDB.\n{e}")
+            Ok(()) => logging::log!("[{}] [poivre-axum] Connected to SurrealDB.", chrono::Local::now().format(DATE_FORMAT)),
+            Err(e) => logging::log!("[{}] [poivre-axum] Unable to connect to SurrealDB.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
         };
     match SURREALDB.signin(Root { username: "root", password: "root" })
         .await {
-            Ok(_) => println!("[poivre-axum] Authenticated succesfully."),
-            Err(e) => println!("[poivre-axum] Unable to authenticate.\n{e}")
+            Ok(_) => logging::log!("[{}] [poivre-axum] Authenticated succesfully.", chrono::Local::now().format(DATE_FORMAT)),
+            Err(e) => logging::log!("[{}] [poivre-axum] Unable to authenticate.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
     };
     match SURREALDB
         .use_ns("dev")
         .use_db("dev")
         .await {
-            Ok(()) => println!("[poivre-axum] Using namespace dev, database dev."),
-            Err(e) => println!("[poivre-axum] Unable to access namespace or database.\n{e}")
+            Ok(()) => logging::log!("[{}] [poivre-axum] Using namespace dev, database dev.", chrono::Local::now().format(DATE_FORMAT)),
+            Err(e) => logging::log!("[{}] [poivre-axum] Unable to access namespace or database.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
     };
 }
 
@@ -71,7 +73,7 @@ pub async fn setup_database() {
     match SURREALDB
         .query(scaffold_tables)
         .await {
-            Ok(_) => println!("[poivre-axum] Tables created successfully."),
-            Err(e) => println!("[poivre-axum] Unable to create tables.\n{e}")
+            Ok(_) => logging::log!("[{}] [poivre-axum] Tables created successfully.", chrono::Local::now().format(DATE_FORMAT)),
+            Err(e) => logging::log!("[{}] [poivre-axum] Unable to create tables.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
         };
 }
