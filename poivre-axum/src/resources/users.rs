@@ -68,7 +68,7 @@ impl fmt::Display for UserParseError {
 impl Error for UserParseError {}
 
 impl TableRow for User {
-    fn headers (self) -> impl Iterator<Item = String> {
+    fn headers() -> impl Iterator<Item = String> {
         vec!(
             "ID",
             "Image",

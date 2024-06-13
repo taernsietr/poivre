@@ -21,7 +21,7 @@ pub struct Item {
 }
 
 impl TableRow for Item {
-    fn headers (self) -> impl Iterator<Item = String> {
+    fn headers() -> impl Iterator<Item = String> {
         vec!(
             "ID",
             "Image",

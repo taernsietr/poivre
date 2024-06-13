@@ -12,7 +12,7 @@ use crate::{
     },
     components::{
         items::ItemDescription,
-        users::UserProfile,
+        users::UserHome,
         elements::Navbar
     }
 };
@@ -38,9 +38,8 @@ pub fn App() -> impl IntoView {
                 <main class="flex flex-col border-4 border-solid bg-orange-300 m-4">
                     <header class="place-self-center">
                         <hgroup>
-                            <h1 class="text-lg font-medium">"Poivre"</h1>
-                            <sub><i>"['pwa.vʀ]"</i></sub>
-                            <p>"A platform for mapping culinary preferences and restrictions"</p>
+                            <h1 class="text-lg font-medium">"Poivre"<sub><i>"['pwa.vʀ]"</i></sub></h1>
+                            <h2>"A platform for mapping culinary preferences and restrictions"</h2>
                         </hgroup>
                     </header>
                     <div class="flex flex-col border-4 border-solid m-8 p-8">
@@ -50,7 +49,7 @@ pub fn App() -> impl IntoView {
                             <Route path="/signup" view=SignupForm />
                             <Route path="/login" view=LoginForm />
                             <Route path="/item/:id" view=ItemDescription />
-                            <Route path="/user/:id" view=UserProfile />
+                            <Route path="/user/:id/" view=UserHome/>
                         </Routes>
                     </div>
                 </main>

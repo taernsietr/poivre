@@ -1,5 +1,5 @@
 use std::future::Future;
-use serde::{Serialize,Deserialize};
+use std::fmt::Debug;
 use leptos::*;
 use leptos_meta::Title;
 use crate::{
@@ -26,8 +26,8 @@ pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
 pub fn Admin() -> impl IntoView {
     view! {
         <Title text="Poivre - Admin"/>
-        <UserTable />
-        <ItemTable />
+        <AdminTable fetcher=get_all_items />
+        <AdminTable fetcher=get_all_users />
     }
 }
 
@@ -46,13 +46,15 @@ pub fn TableRow(row: impl TableRow) -> impl IntoView {
 }
 
 #[component]
-pub fn TestTable<T>(source: impl Fn() -> T + 'static) -> impl IntoView
+pub fn AdminTable<T,U,E>(fetcher: impl Fn() -> T + 'static) -> impl IntoView
 where
-    T: Future + 'static,
-    T::Output: Serializable + Clone + 'static
+    E: Debug + 'static,
+    U: Clone + TableRow + 'static,
+    T: Future<Output = Result<Vec<U>,E>> + 'static,
+    Result<Vec<U>,E>: Serializable + Clone
 {
     let (table, _set_table) = create_signal(());
-    let resource = Resource::new(move || table, |_| source());
+    let resource = create_resource(move || table.get(), move |_| fetcher());
 
     view! {
         <Suspense fallback=move || view! { <p>"No data loaded!"</p> }>
@@ -60,86 +62,16 @@ where
                 <caption>Users</caption>
                 <thead>
                     <tr class="align-left bg-orange-200 border-4 border-solid border-black-200 p-4">
-                        <th>Image</th>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Date of Birth</th>
+                        { U::headers().map(|header| view! { <th>{header}</th> }).collect_view() }
                     </tr>
                 </thead>
                 {
                     move || resource.get()
                         .map(|data| {
                             data.unwrap()
-                                .iter()
-                                .map(|row| view! { <TableRow row=row.clone() /> }).collect_view()
-                        })
-                }
-            </table>
-        </Suspense>
-    }
-}
-
-
-/// Table listing users
-#[component]
-pub fn UserTable() -> impl IntoView {
-    let (table, _set_table) = create_signal(());
-    let resource = Resource::new(move || table, |_| get_all_users());
-
-    view! {
-        <Suspense fallback=move || view! { <p>"No data loaded!"</p> }>
-            <table class="border-4 border-solid border-black-200 m-4">
-                <caption>Users</caption>
-                <thead>
-                    <tr class="align-left bg-orange-200 border-4 border-solid border-black-200 p-4">
-                        <th>Image</th>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Date of Birth</th>
-                    </tr>
-                </thead>
-                {
-                    move || resource.get()
-                        .map(|data| {
-                            data.unwrap()
-                                .iter()
-                                .map(|row| view! { <TableRow row=row.clone() /> }).collect_view()
-                        })
-                }
-            </table>
-        </Suspense>
-    }
-}
-
-/// The table for the list of items queried from the database.
-#[component]
-pub fn ItemTable() -> impl IntoView {
-    let (table, _set_table) = create_signal(());
-    let resource = Resource::new(move || table, |_| get_all_items());
-
-    view! {
-        <Suspense fallback=move || view! { <p>"No data loaded!"</p> }>
-            <table class="border-4 border-solid border-black-200 m-4">
-                <caption>Items</caption>
-                <thead>
-                    <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4">
-                        <th class="align-left">Image</th>
-                        <th class="align-left">ID</th>
-                        <th class="align-left">Name</th>
-                        <th class="align-left">Category</th>
-                        <th class="align-left">Descriptors</th>
-                    </tr>
-                </thead>
-                {
-                    move || resource.get()
-                        .map(|data| {
-                            data.unwrap()
-                                .iter()
-                                .map(|row| view! { <TableRow row=row.clone() /> }).collect_view()
+                                .into_iter()
+                                .map(|row| view! { <TableRow row=row.clone() /> })
+                                .collect_view()
                         })
                 }
             </table>
