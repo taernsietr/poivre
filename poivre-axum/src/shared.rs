@@ -4,7 +4,7 @@ use serde::{Serialize,Deserialize};
 /// be iterated over and turned into a HTML table row.
 pub trait PoivreTableRow {
     fn headers() -> impl Iterator<Item = String>;
-    fn into_row(&self) -> impl Iterator<Item = String>;
+    fn row_values(&self) -> impl Iterator<Item = String>;
 }
 
 pub trait PoivreCard: Clone {

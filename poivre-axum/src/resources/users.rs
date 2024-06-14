@@ -31,7 +31,7 @@ impl PoivreTableRow for User {
         ).into_iter().map(|x| x.to_string())
     }
 
-    fn into_row(&self) -> impl Iterator<Item = String> {
+    fn row_values(&self) -> impl Iterator<Item = String> {
         vec!(
             self.id(),
             self.image(),

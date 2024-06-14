@@ -52,7 +52,7 @@ pub fn AdminTableRow(row: impl PoivreTableRow + 'static) -> impl IntoView {
         <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4 hover:bg-orange-400">
             {
                 row
-                    .into_row()
+                    .row_values()
                     .map(|field| view! { <td class="align-left">{ field }</td> })
                     .collect_view()
             }
