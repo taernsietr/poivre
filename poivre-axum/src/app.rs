@@ -2,19 +2,27 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-use crate::error_template::{AppError, ErrorTemplate};
 use crate::{
+    error_template::{AppError, ErrorTemplate},
     pages::{
         home::Home,
-        admin::Admin,
+        admin::Dashboard,
         login::LoginForm,
-        signup::SignupForm
+        signup::SignupForm,
+        user::UserHome,
+        item::{
+            ItemLanding,
+            ItemDescription,
+            AddItem,
+            EditItem,
+        },
+        reports::{
+            CreateReport,
+            ReportInvite,
+            ReportDetails,
+        }
     },
-    components::{
-        items::ItemDescription,
-        users::UserHome,
-        elements::Navbar
-    }
+    components::elements::Navbar
 };
 
 /// Main app component. Contains the Router.
@@ -45,11 +53,16 @@ pub fn App() -> impl IntoView {
                     <div class="flex flex-col border-4 border-solid m-8 p-8">
                         <Routes>
                             <Route path="/" view=Home />
-                            <Route path="/admin" view=Admin />
+                            <Route path="/admin" view=Dashboard />
                             <Route path="/signup" view=SignupForm />
                             <Route path="/login" view=LoginForm />
-                            <Route path="/item/:id" view=ItemDescription />
-                            <Route path="/user/:id/" view=UserHome/>
+                            <Route path="/users/:id/" view=UserHome />
+                            <Route path="/items" view=ItemLanding>
+                                <Route path=":id" view=ItemDescription>
+                                    <Route path="edit" view=EditItem />
+                                </Route>
+                                <Route path="add" view=AddItem />
+                            </Route>
                         </Routes>
                     </div>
                 </main>

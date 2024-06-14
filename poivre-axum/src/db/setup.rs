@@ -1,8 +1,13 @@
 use leptos::logging;
-use surrealdb::Surreal;
-use surrealdb::opt::auth::Root;
-use surrealdb::engine::remote::ws::{Client,Ws};
 use once_cell::sync::Lazy;
+use surrealdb::{
+    Surreal,
+    opt::auth::Root,
+    engine::remote::ws::{
+        Client,
+        Ws
+    }
+};
 
 /// Initiate a SurrealDB Client statically, so it can be accessed globally. The actual connection
 /// is made in connect_database.
@@ -17,7 +22,8 @@ pub async fn connect_database() {
             Ok(()) => logging::log!("[{}] [poivre-axum] Connected to SurrealDB.", chrono::Local::now().format(DATE_FORMAT)),
             Err(e) => logging::log!("[{}] [poivre-axum] Unable to connect to SurrealDB.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
         };
-    match SURREALDB.signin(Root { username: "root", password: "root" })
+    match SURREALDB
+        .signin(Root { username: "root", password: "root" })
         .await {
             Ok(_) => logging::log!("[{}] [poivre-axum] Authenticated succesfully.", chrono::Local::now().format(DATE_FORMAT)),
             Err(e) => logging::log!("[{}] [poivre-axum] Unable to authenticate.\n{}", chrono::Local::now().format(DATE_FORMAT), e)

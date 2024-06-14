@@ -4,12 +4,14 @@ async fn main() {
     use axum::Router;
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
-    use poivre_axum::app::*;
-    use poivre_axum::db::setup::{
-        connect_database,
-        setup_database
+    use poivre_axum::{
+        app::*,
+        db::setup::{
+            connect_database,
+            setup_database
+        },
+        fileserv::file_and_error_handler
     };
-    use poivre_axum::fileserv::file_and_error_handler;
     
     connect_database().await;
     setup_database().await;

@@ -1,8 +1,14 @@
 use leptos::*;
 use leptos_meta::Title;
 use leptos_router::{A, ActionForm};
-use crate::db::setup;
-use crate::resources::users::User;
+use crate::{
+    db::setup,
+    shared::Image,
+    resources::{
+        user_builder::UserBuilder,
+        users::User
+    },
+};
 
 /// User signup page
 #[component]
@@ -59,11 +65,9 @@ pub fn SignupForm() -> impl IntoView {
                 <input
                     type="date"
                     placeholder=""
-                    name="birth_year" />
+                    name="date_of_birth" />
             </label>
-            <input
-                type="submit"
-                value="Sign up" />
+            <button type="submit">"Sign Up"</button>
             <div>"Have an account already? "<A href="/login">"Login in!"</A></div> 
         </ActionForm>
     }
@@ -80,8 +84,8 @@ pub async fn sign_up(
     date_of_birth: String
     ) -> Result<(), ServerFnError> {
         // TODO: handle profile image - user may or may not supply one
-        let signup = User::new(
-            None,
+        let signup = UserBuilder::new(
+            Image::NoImage,
             username,
             email,
             password,

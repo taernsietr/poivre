@@ -43,7 +43,7 @@ pub fn ItemDescription() -> impl IntoView {
         .unwrap();
 
     view! {
-        <Suspense fallback=move || view! { <ItemDescriptionFallback /> }>
+        <Suspense fallback=move || view! { <p>"Loading item info..."</p> }>
             <div>
                 <p>{ item.image() }</p>
                 <p>{ item.id() }</p>
@@ -56,9 +56,3 @@ pub fn ItemDescription() -> impl IntoView {
     }
 }
 
-#[component]
-pub fn ItemDescriptionFallback() -> impl IntoView {
-    view! {
-        <p>"Loading item info..."</p>
-    }
-}

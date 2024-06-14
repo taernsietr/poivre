@@ -2,30 +2,44 @@ use std::future::Future;
 use std::fmt::Debug;
 use leptos::*;
 use leptos_meta::Title;
+use leptos_router::A;
 use crate::{
     resources::{
         users::User,
-        items::Item
+        items::{Item,ItemBuilder}
     },
-    shared::TableRow
+    shared::PoivreTableRow
 };
 
 /// Server endpoint for returning all database users (debugging purposes only).
-#[server(GetAllUsers)]
+#[server(GetAllUsers, "/internal")]
 pub async fn get_all_users() -> Result<Vec<User>, ServerFnError> {
     Result::Ok(User::mock_user_list())
 }
 
 /// Server endpoint for returning all database items (debugging purposes only).
-#[server(GetAllItems)]
+#[server(GetAllItems, "/internal")]
 pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
     Result::Ok(Item::mock_item_list())
 }
 
+/// Server endpoint for adding a new database item.
+#[server(AddItem, "/internal")]
+pub async fn add_item() -> Result<(), ServerFnError> {
+    todo!()
+}
+
+/// Server endpoint for updating (editing) a database item.
+#[server(UpdateItem, "/internal")]
+pub async fn update_item() -> Result<(), ServerFnError> {
+    todo!()
+}
+
 #[component]
-pub fn Admin() -> impl IntoView {
+pub fn Dashboard() -> impl IntoView {
     view! {
         <Title text="Poivre - Admin"/>
+        <A href="/items/add">"Add Item"</A>
         <AdminTable fetcher=get_all_items />
         <AdminTable fetcher=get_all_users />
     }
@@ -33,13 +47,14 @@ pub fn Admin() -> impl IntoView {
 
 /// A table row for a list of entries queried from the database.
 #[component]
-pub fn TableRow(row: impl TableRow) -> impl IntoView {
+pub fn AdminTableRow(row: impl PoivreTableRow + 'static) -> impl IntoView {
     view! {
-        <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4">
+        <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4 hover:bg-orange-400">
             {
-                row.into_row().map(|field| view! {
-                    <td class="align-left">{ field }</td>
-                }).collect_view()
+                row
+                    .into_row()
+                    .map(|field| view! { <td class="align-left">{ field }</td> })
+                    .collect_view()
             }
         </tr>
     }
@@ -49,7 +64,7 @@ pub fn TableRow(row: impl TableRow) -> impl IntoView {
 pub fn AdminTable<T,U,E>(fetcher: impl Fn() -> T + 'static) -> impl IntoView
 where
     E: Debug + 'static,
-    U: Clone + TableRow + 'static,
+    U: Clone + PoivreTableRow + 'static,
     T: Future<Output = Result<Vec<U>,E>> + 'static,
     Result<Vec<U>,E>: Serializable + Clone
 {
@@ -62,7 +77,11 @@ where
                 <caption>Users</caption>
                 <thead>
                     <tr class="align-left bg-orange-200 border-4 border-solid border-black-200 p-4">
-                        { U::headers().map(|header| view! { <th>{header}</th> }).collect_view() }
+                        {
+                            U::headers()
+                                .map(|header| view! { <th>{header}</th> })
+                                .collect_view()
+                        }
                     </tr>
                 </thead>
                 {
@@ -70,7 +89,7 @@ where
                         .map(|data| {
                             data.unwrap()
                                 .into_iter()
-                                .map(|row| view! { <TableRow row=row.clone() /> })
+                                .map(|row| view! { <AdminTableRow row=row.clone() /> })
                                 .collect_view()
                         })
                 }
