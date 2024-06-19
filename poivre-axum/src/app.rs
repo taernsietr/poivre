@@ -52,12 +52,12 @@ pub fn App() -> impl IntoView {
                     </header>
                     <div class="flex flex-col border-4 border-solid m-8 p-8">
                         <Routes>
-                            <Route path="/" view=Home />
-                            <Route path="/admin" view=Dashboard />
-                            <Route path="/signup" view=SignupForm />
-                            <Route path="/login" view=LoginForm />
-                            <Route path="/users/:id/" view=UserHome />
-                            <Route path="/items" view=ItemLanding>
+                            <Route path="" view=Home />
+                            <Route path="admin" view=Dashboard />
+                            <Route path="signup" view=SignupForm />
+                            <Route path="login" view=LoginForm />
+                            <Route path="users/:id/" view=UserHome />
+                            <Route path="items" view=ItemLanding>
                                 <Route path=":id" view=ItemDescription>
                                     <Route path="edit" view=EditItem />
                                 </Route>

@@ -59,7 +59,7 @@ impl PoivreTableRow for Item {
             "Category",
             "Description",
             "Descriptors",
-            "Associated_Cuisines"
+            "Associated Cuisines"
         ).into_iter().map(|x| x.to_string())
     }
 

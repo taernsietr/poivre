@@ -601,6 +601,10 @@ video {
   display: table;
 }
 
+.contents {
+  display: contents;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -705,5 +709,10 @@ video {
 .hover\:bg-orange-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 237 213 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-orange-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 146 60 / var(--tw-bg-opacity));
 }
 

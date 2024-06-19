@@ -4,33 +4,37 @@ use leptos::*;
 use leptos_meta::Title;
 use leptos_router::A;
 use crate::{
-    resources::{
-        users::User,
-        items::{Item,ItemBuilder}
-    },
-    shared::PoivreTableRow
+    db::setup::SURREALDB, resources::{
+        items::{Item,ItemBuilder}, users::User
+    }, shared::PoivreTableRow
 };
 
 /// Server endpoint for returning all database users (debugging purposes only).
-#[server(GetAllUsers, "/internal")]
+#[server(GetAllUsers)]
 pub async fn get_all_users() -> Result<Vec<User>, ServerFnError> {
-    Result::Ok(User::mock_user_list())
+    //Result::Ok(User::mock_user_list())
+    match SURREALDB
+        .select::<Vec<User>>("users")
+        .await {
+            Ok(users) => Ok(users),
+            Err(e) => Err(ServerFnError::from(e))
+        }
 }
 
 /// Server endpoint for returning all database items (debugging purposes only).
-#[server(GetAllItems, "/internal")]
+#[server(GetAllItems)]
 pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
     Result::Ok(Item::mock_item_list())
 }
 
 /// Server endpoint for adding a new database item.
-#[server(AddItem, "/internal")]
+#[server(AddItem)]
 pub async fn add_item() -> Result<(), ServerFnError> {
     todo!()
 }
 
 /// Server endpoint for updating (editing) a database item.
-#[server(UpdateItem, "/internal")]
+#[server(UpdateItem)]
 pub async fn update_item() -> Result<(), ServerFnError> {
     todo!()
 }
@@ -64,7 +68,7 @@ pub fn AdminTableRow(row: impl PoivreTableRow + 'static) -> impl IntoView {
 pub fn AdminTable<T,U,E>(fetcher: impl Fn() -> T + 'static) -> impl IntoView
 where
     E: Debug + 'static,
-    U: Clone + PoivreTableRow + 'static,
+    U: Clone + Debug + PoivreTableRow + 'static,
     T: Future<Output = Result<Vec<U>,E>> + 'static,
     Result<Vec<U>,E>: Serializable + Clone
 {
@@ -87,6 +91,7 @@ where
                 {
                     move || resource.get()
                         .map(|data| {
+                            dbg!(&data);
                             data.unwrap()
                                 .into_iter()
                                 .map(|row| view! { <AdminTableRow row=row.clone() /> })

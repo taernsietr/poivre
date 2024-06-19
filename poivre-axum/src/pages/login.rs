@@ -28,7 +28,7 @@ pub fn LoginForm() -> impl IntoView {
                     type="checkbox"
                     name="remember-login" />
             </label>
-            <input type="submit" />
+            <button type="submit">"Login"</button>
             <div>"Not registered? "<A href="/signup">"Sign up!"</A></div> 
         </form>
     }

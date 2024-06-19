@@ -19,10 +19,10 @@ fn NavbarItem(href: String, inner_html: String) -> impl IntoView {
 #[component]
 pub fn Navbar() -> impl IntoView {
     let navbar_links: [(&str,&str); 4] = [
-        ("/", "Home"),
-        ("/login", "Login"),
-        ("/signup", "Sign Up"),
-        ("/admin", "Admin")
+        ("", "Home"),
+        ("login", "Login"),
+        ("signup", "Sign Up"),
+        ("admin", "Admin")
     ];
 
     view! {

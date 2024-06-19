@@ -10,7 +10,7 @@ struct ItemParams {
     pub id: Option<String>
 }
 
-#[server(GetItem, "/internal")]
+#[server(GetItem)]
 pub async fn get_item() -> Result<Item, ServerFnError> {
     let params = use_params::<ItemParams>();
     let id = move || {
