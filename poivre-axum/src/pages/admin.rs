@@ -16,7 +16,7 @@ pub async fn get_all_users() -> Result<Vec<User>, ServerFnError> {
     match SURREALDB
         .select::<Vec<User>>("users")
         .await {
-            Ok(users) => Ok(users),
+            Ok(users) => { dbg!(&users); Ok(users) },
             Err(e) => Err(ServerFnError::from(e))
         }
 }
@@ -91,7 +91,6 @@ where
                 {
                     move || resource.get()
                         .map(|data| {
-                            dbg!(&data);
                             data.unwrap()
                                 .into_iter()
                                 .map(|row| view! { <AdminTableRow row=row.clone() /> })

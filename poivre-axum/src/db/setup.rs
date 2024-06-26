@@ -57,14 +57,14 @@ pub async fn setup_database() {
                 DEFINE FIELD first_name ON TABLE users TYPE string;
                 DEFINE FIELD last_name ON TABLE users TYPE string;
                 DEFINE FIELD date_of_birth ON TABLE users;
-                DEFINE FIELD friends on TABLE users TYPE option<set<record<users>>>;
+                DEFINE FIELD friends on TABLE users TYPE set<record<users>>;
             DEFINE TABLE items SCHEMAFULL;
                 DEFINE FIELD name ON TABLE items TYPE set<string>;
                 DEFINE FIELD category ON TABLE items TYPE string;
                 DEFINE FIELD image_url ON TABLE items TYPE string;
                 DEFINE FIELD description ON TABLE items TYPE string;
                 DEFINE FIELD descriptors ON TABLE items TYPE set<string>;
-                DEFINE FIELD associated_cuisines ON TABLE items TYPE option<set<string>>;
+                DEFINE FIELD associated_cuisines ON TABLE items TYPE set<string>;
             DEFINE TABLE cuisines SCHEMAFULL;
                 DEFINE FIELD name ON TABLE cuisines TYPE string;
                 DEFINE FIELD image_url ON TABLE cuisines TYPE option<string>;
