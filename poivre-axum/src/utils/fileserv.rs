@@ -16,9 +16,10 @@ pub async fn file_and_error_handler(
 ) -> AxumResponse {
     let root = options.site_root.clone();
     let (parts, body) = req.into_parts();
-
     let mut static_parts = parts.clone();
+
     static_parts.headers.clear();
+
     if let Some(encodings) = parts.headers.get("accept-encoding") {
         static_parts
             .headers

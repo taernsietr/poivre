@@ -3,7 +3,7 @@ use leptos_meta::*;
 use leptos_router::*;
 
 use crate::{
-    error_template::{AppError, ErrorTemplate},
+    utils::error_template::{AppError, ErrorTemplate},
     pages::{
         home::Home,
         admin::Dashboard,
@@ -46,7 +46,7 @@ pub fn App() -> impl IntoView {
                 <main class="flex flex-col border-4 border-solid bg-orange-300 m-4">
                     <header class="place-self-center">
                         <hgroup>
-                            <h1 class="text-lg font-medium">"Poivre"<sub><i>"['pwa.vʀ]"</i></sub></h1>
+                            <h1 class="text-lg font-medium">"Poivre" <sub><i>"['pwa.vʀ]"</i></sub></h1>
                             <h2>"A platform for mapping culinary preferences and restrictions"</h2>
                         </hgroup>
                     </header>
