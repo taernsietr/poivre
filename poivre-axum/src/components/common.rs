@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos_router::A;
-use crate::shared::PoivreCard;
+use crate::resources::shared::PoivreCard;
 
 /// Navbar item, that is, a button redirecting to another page.
 #[component]
@@ -17,14 +17,7 @@ fn NavbarItem(href: String, inner_html: String) -> impl IntoView {
 /// Main navbar. Should appear in most if not all pages.
 /// TODO: If we are logged in, we should show profile links instead of the login link
 #[component]
-pub fn Navbar() -> impl IntoView {
-  let navbar_links: [(&str,&str); 4] = [
-    ("", "Home"),
-    ("login", "Login"),
-    ("signup", "Sign Up"),
-    ("admin", "Admin")
-  ];
-
+pub fn Navbar(entries: Vec<(&'static str, &'static str)>) -> impl IntoView {
   view! {
     <nav class="float w-full border-4 border-solid justify-around bg-orange-500">
       <div class="flex flex-row">
@@ -34,9 +27,9 @@ pub fn Navbar() -> impl IntoView {
           alt="Poivre logo: a cartoonish pepper mill and salt shaker"
         />
         {
-          navbar_links
+          entries
             .into_iter()
-            .map(|link| view! { <NavbarItem href={link.0.to_string()} inner_html={link.1.to_string()} /> })
+            .map(|entry| view! { <NavbarItem href={entry.0.to_string()} inner_html={entry.1.to_string()} /> })
             .collect_view()
         }
       </div>

@@ -16,19 +16,26 @@ use crate::{
             AddItem,
             EditItem,
         },
-        reports::{
-            CreateReport,
-            ReportInvite,
-            ReportDetails,
+        event::{
+            CreateEvent,
+            EventInvite,
+            EventDetails,
         }
     },
-    components::elements::Navbar
+    components::common::Navbar
 };
 
 /// Main app component. Contains the Router.
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
+
+    let navbar_entries = vec!(
+        ("Home", ""),
+        ("Login", "login"),
+        ("Sign Up", "signup"),
+        ("Admin", "admin")
+    );
 
     view! {
         <Stylesheet id="leptos" href="/pkg/poivre-axum.css"/>
@@ -42,7 +49,7 @@ pub fn App() -> impl IntoView {
             .into_view()
         }>
             <div class="h-screen max-w-[1920px] border-4 border-solid bg-orange-950 flex flex-col mx-auto mt-24">
-                <Navbar />
+                <Navbar entries=navbar_entries />
                 <main class="flex flex-col border-4 border-solid bg-orange-300 m-4">
                     <header class="place-self-center">
                         <hgroup>
@@ -57,12 +64,10 @@ pub fn App() -> impl IntoView {
                             <Route path="signup" view=SignupForm />
                             <Route path="login" view=LoginForm />
                             <Route path="users/:id/" view=UserHome />
-                            <Route path="items" view=ItemLanding>
-                                <Route path=":id" view=ItemDescription>
-                                    <Route path="edit" view=EditItem />
-                                </Route>
-                                <Route path="add" view=AddItem />
-                            </Route>
+                            <Route path="items" view=ItemLanding />
+                            <Route path="items/:id" view=ItemDescription />
+                            <Route path="items/:id/edit" view=EditItem />
+                            <Route path="add" view=AddItem />
                         </Routes>
                     </div>
                 </main>

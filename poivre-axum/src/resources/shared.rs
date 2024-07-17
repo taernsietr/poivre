@@ -26,3 +26,11 @@ pub enum Image {
     HasImage(String)
 }
 
+#[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
+pub enum AttendeeStatus {
+  Pending,
+  Rejected,
+  Accepted,
+  Removed
+}
+

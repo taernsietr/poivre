@@ -6,10 +6,11 @@ use leptos::logging;
 use serde::{Serialize,Deserialize};
 use chrono::{DateTime,NaiveDate,Utc,Local};
 use regex::Regex;
-use crate::shared::Image;
+use crate::resources::shared::Image;
 
 const DATE_FORMAT: &str = "%H:%M:%S";
 
+// TODO: set the correct characters
 pub static ILLEGAL_USERNAME_CHARACTERS: &str = "º°ª§";
 pub static ILLEGAL_PASSWORD_CHARACTERS: &str = "º°ª§";
 pub static FIRST_NAME_MAX_LENGTH: usize = 64;

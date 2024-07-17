@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use crate::shared::{
+use crate::resources::shared::{
     Image,
     PoivreCard,
     PoivreTableRow
@@ -67,21 +67,5 @@ impl User {
             Image::NoImage => String::new()
         }
     }
-
-    //pub fn mock_user_list() -> Vec<User> {
-    //    vec!(
-    //        User {
-    //            id: "00000000".to_string(),
-    //            image: Image::NoImage,
-    //            username: "john_doe".to_string(),
-    //            email: "johndoe@provider.com".to_string(),
-    //            password: "abcdefghi".to_string(),
-    //            first_name: "John".to_string(),
-    //            last_name: "Doe".to_string(),
-    //            date_of_birth: "09/11/2001".to_string(),
-    //            friends: Vec::<String>::new()
-    //        }
-    //    )
-    //}
 }
 

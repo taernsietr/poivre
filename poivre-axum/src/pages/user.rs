@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos_router::A;
-use crate::resources::users::User;
+use crate::resources::user::User;
 
 /// Sidebar for navigating user pages when logged in.
 #[component]

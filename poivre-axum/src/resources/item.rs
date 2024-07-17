@@ -1,7 +1,7 @@
 use std::iter::Iterator;
 use serde::{Serialize, Deserialize};
 use super::category::Category;
-use crate::shared::{
+use crate::resources::shared::{
     ItemName,
     Image,
     PoivreCard,
@@ -110,35 +110,4 @@ impl Item {
         }
     }
 
-    pub fn mock_item_list() -> Vec<Item> {
-        vec!(
-            Item {
-                id: "0000000000".to_string(),
-                name: ItemName::SingleName("Apple".to_string()),
-                image: Image::NoImage,
-                category: Category::Ingredient,
-                description: "A sweet fruit, usually red.".to_string(),
-                descriptors: vec!("fruit".to_string(), "sweet".to_string(), "aromatic".to_string()),
-                associated_cuisines: vec!("".to_string())
-            },
-            Item {
-                id: "0000000001".to_string(),
-                name: ItemName::SingleName("Banana".to_string()),
-                image: Image::HasImage("some/url".to_string()),
-                category: Category::Ingredient,
-                description: "A sweet fruit, yellow, with a thick peel.".to_string(),
-                descriptors: vec!("fruit".to_string(), "sweet".to_string(), "aromatic".to_string()),
-                associated_cuisines: vec!("".to_string())
-            },
-            Item {
-                id: "0000000002".to_string(),
-                name: ItemName::SingleName("Pizza".into()),
-                image: Image::HasImage("some/url".to_string()),
-                category: Category::Dish,
-                description: "One of the most popular dishes worldwide with roots in Italy, pizzas are flat disks of dough (though ocasionally found in other shapes), usually covered with tomato sauce and melted cheese, and may have any number of toppings added to it.".to_string(),
-                descriptors: vec!("bread".to_string(), "gluten".to_string(), "savory".to_string(), "baked".to_string()),
-                associated_cuisines: vec!("italian".to_string(), "fast-food".to_string())
-            }
-        )
-    }
 }

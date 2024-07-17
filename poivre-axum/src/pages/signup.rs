@@ -4,8 +4,8 @@ use leptos_router::{A, ActionForm};
 use crate::{
     db::setup, resources::{
         user_builder::{UserBuilder, UserParseError},
-        users::User
-    }, shared::Image
+        user::User
+    }, resources::shared::Image
 };
 
 /// User signup page
