@@ -2,7 +2,11 @@ use leptos::*;
 use leptos_meta::Title;
 use leptos_router::{A, ActionForm};
 use crate::{
-    db::setup, resources::{
+    db::{
+        setup,
+        user::SignUp
+    },
+    resources::{
         user_builder::{UserBuilder, UserParseError},
         user::User
     }, resources::shared::Image
@@ -85,34 +89,5 @@ pub fn SignupForm() -> impl IntoView {
             <div>"Have an account already? "<A href="/login">"Log in!"</A></div> 
         </ActionForm>
     }
-}
-
-/// New account handler function
-#[server(SignUp)]
-pub async fn sign_up(
-    username: String,
-    email: String,
-    password: String,
-    first_name: String,
-    last_name: String,
-    date_of_birth: String
-    ) -> Result<(), ServerFnError> {
-        // TODO: handle profile image - user may or may not supply one
-        let form_data = UserBuilder::new(
-            Image::NoImage,
-            username,
-            email,
-            password,
-            first_name,
-            last_name,
-            date_of_birth 
-        )?;
-
-        let response: Result<Vec<UserBuilder>,surrealdb::Error> = setup::SURREALDB
-            .create("users")
-            .content(form_data)
-            .await;
-        
-        Ok(())
 }
 

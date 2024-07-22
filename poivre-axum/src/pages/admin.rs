@@ -55,25 +55,25 @@ where
   view! {
   <Suspense fallback=move || view! { <p>"No data loaded!"</p> }>
     <table class="border-4 border-solid border-black-200 m-4">
-    <caption>{caption}</caption>
-    <thead>
-      <tr class="align-left bg-orange-200 border-4 border-solid border-black-200 p-4">
-      {
-        U::headers()
-          .map(|header| view! { <th>{header}</th> })
-          .collect_view()
-      }
-      </tr>
-    </thead>
-    {
-      move || resource.get()
-        .map(|data| {
-          data.unwrap()
-          .into_iter()
-          .map(|row| view! { <PoivreTableRow row=row.clone() /> })
-          .collect_view()
-      })
-    }
+      <caption>{caption}</caption>
+      <thead>
+        <tr class="align-left bg-orange-200 border-4 border-solid border-black-200 p-4">
+          {
+            U::headers()
+              .map(|header| view! { <th>{header}</th> })
+              .collect_view()
+          }
+        </tr>
+      </thead>
+        {
+          move || resource.get()
+            .map(|data| {
+              data.unwrap()
+              .into_iter()
+              .map(|row| view! { <PoivreTableRow row=row.clone() /> })
+              .collect_view()
+          })
+        }
     </table>
   </Suspense>
   }

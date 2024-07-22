@@ -1,6 +1,6 @@
 use serde::{Serialize,Deserialize};
 
-/// A type implementing this trait is able to convert its contents into a Vec<String>, in order to
+/// A type implementing this trait is able to convert its contents into a Vec of String, in order to
 /// be iterated over and turned into a HTML table row.
 pub trait PoivreTableRow {
     fn headers() -> impl Iterator<Item = String>;

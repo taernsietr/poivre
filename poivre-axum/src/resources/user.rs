@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use surrealdb::sql::Thing;
 use crate::resources::shared::{
     Image,
     PoivreCard,
@@ -7,7 +8,7 @@ use crate::resources::shared::{
 
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub struct User {
-    //id: String,
+    id: Thing,
     image: Image,
     username: String,
     email: String,
@@ -33,7 +34,7 @@ impl PoivreTableRow for User {
 
     fn row_values(&self) -> impl Iterator<Item = String> {
         vec!(
-            //self.id(),
+            self.id(),
             self.image(),
             self.username(),
             self.email(),
@@ -53,7 +54,7 @@ impl PoivreCard for User {
 }
 
 impl User {
-    //pub fn id(&self) -> String { self.id.clone() }
+    pub fn id(&self) -> Thing { self.id.clone() }
     pub fn username(&self) -> String { self.username.clone() }
     pub fn email(&self) -> String { self.email.clone() }
     pub fn first_name(&self) -> String { self.first_name.clone() }

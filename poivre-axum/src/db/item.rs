@@ -19,14 +19,14 @@ struct ItemParams {
 #[server(GetAllItems)]
 pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
   match SURREALDB
-  .select::<Vec<Item>>("items")
-  .await {
-    Ok(items) => {
-      dbg!(&items);
-      Ok(items)
-    },
-    Err(e) => Err(ServerFnError::from(e))
-  }
+    .select::<Vec<Item>>("items")
+    .await {
+      Ok(items) => {
+        dbg!(&items);
+        Ok(items)
+      },
+      Err(e) => Err(ServerFnError::from(e))
+    }
 }
 
 /// Server endpoint for adding a new database item.

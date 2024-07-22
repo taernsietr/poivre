@@ -73,6 +73,16 @@ pub async fn setup_database() {
                 DEFINE FIELD preference ON preferences TYPE string ASSERT $value IN ['love', 'like', 'ambivalent', 'dislike', 'allergic', 'prohibited'];
                 DEFINE FIELD condition ON preferences TYPE option<array<object>>; 
             DEFINE TABLE is_ingredient_of SCHEMALESS;
+            CREATE users CONTENT {
+                email: 'tsrodr@ufrrj.br',
+                username: 'tsrodr',
+                password: '123456789',
+                image: 'NoImage',
+                first_name: 'Thalles',
+                last_name: 'Rodrigues',
+                date_of_birth: '26/07/1993',
+                friends: []
+            };
         COMMIT TRANSACTION;
         ";
 

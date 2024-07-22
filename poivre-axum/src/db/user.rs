@@ -1,12 +1,16 @@
 use leptos::*;
-use crate::db::setup::SURREALDB;
-use crate::resources::user::User;
+use crate::db::setup;
+use crate::resources::{
+    user::User,
+    user_builder::UserBuilder
+};
+use crate::resources::shared::Image;
 
 /// Server endpoint for returning all database users (debugging purposes only).
 #[server(GetAllUsers)]
 pub async fn get_all_users() -> Result<Vec<User>, ServerFnError> {
   //Result::Ok(User::mock_user_list())
-  match SURREALDB
+  match setup::SURREALDB
   .select::<Vec<User>>("users")
   .await {
     Ok(users) => {
@@ -17,19 +21,32 @@ pub async fn get_all_users() -> Result<Vec<User>, ServerFnError> {
   }
 }
 
-//pub fn mock_user_list() -> Vec<User> {
-//    vec!(
-//        User {
-//            id: "00000000".to_string(),
-//            image: Image::NoImage,
-//            username: "john_doe".to_string(),
-//            email: "johndoe@provider.com".to_string(),
-//            password: "abcdefghi".to_string(),
-//            first_name: "John".to_string(),
-//            last_name: "Doe".to_string(),
-//            date_of_birth: "09/11/2001".to_string(),
-//            friends: Vec::<String>::new()
-//        }
-//    )
-//}
-//
+/// New account handler function
+#[server(SignUp)]
+pub async fn sign_up(
+    username: String,
+    email: String,
+    password: String,
+    first_name: String,
+    last_name: String,
+    date_of_birth: String
+    ) -> Result<(), ServerFnError> {
+        // TODO: handle profile image - user may or may not supply one
+        let form_data = UserBuilder::new(
+            Image::NoImage,
+            username,
+            email,
+            password,
+            first_name,
+            last_name,
+            date_of_birth 
+        )?;
+
+        let response: Result<Vec<UserBuilder>,surrealdb::Error> = setup::SURREALDB
+            .create("users")
+            .content(form_data)
+            .await;
+        
+        Ok(())
+}
+
