@@ -23,7 +23,9 @@ impl EventInvite {
   fn update_guest_status(&mut self, guest_id: String, status: AttendeeStatus) {
     match self.attendees.get(&guest_id) {
       Some(guest) => { let _ = self.attendees.insert(guest_id, status); },
-      None => { eprintln!("Guest ID not found") },
+      None => {
+          eprintln!("Guest ID not found")
+      },
     };
   }
 

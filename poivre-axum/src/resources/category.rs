@@ -25,7 +25,7 @@ impl FromStr for Category {
     type Err = ParseCategoryError;
 
     fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
-        match s.to_lowercase().as_str() {
+        match s.to_lowercase().trim().as_str() {
             "ingredient" => Ok(Category::Ingredient),
             "dish" => Ok(Category::Dish),
             "beverage" => Ok(Category::Beverage),
