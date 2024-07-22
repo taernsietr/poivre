@@ -12,7 +12,7 @@ async fn main() {
         },
         utils::fileserv::file_and_error_handler
     };
-    
+
     connect_database().await;
     setup_database().await;
 

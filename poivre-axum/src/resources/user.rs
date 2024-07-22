@@ -64,7 +64,7 @@ impl PoivreCard for User {
 impl User {
   pub fn id(&self) -> String {
     match &self.id {
-      Some(id) => id.clone().to_string().replace("users:", ""),
+      Some(id) => id.clone().id.to_string(),
       None => String::new()
     }
   }

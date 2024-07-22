@@ -17,10 +17,9 @@ use crate::{
 };
 
 #[component]
-pub fn Dashboard() -> impl IntoView {
+pub fn AdminDashboard() -> impl IntoView {
   view! {
     <Title text="Poivre - Admin"/>
-    <A href="/items/add">"Add Item"</A>
     <PoivreTable fetcher=get_all_items caption="Items" />
     <PoivreTable fetcher=get_all_users caption="Users"/>
   }
