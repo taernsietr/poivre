@@ -16,7 +16,7 @@ use crate::resources::{
 
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub struct User {
-  id: Thing,
+  id: Option<Thing>,
   image: Image,
   username: String,
   email: String,
@@ -62,13 +62,18 @@ impl PoivreCard for User {
 }
 
 impl User {
-  pub fn id(&self) -> Thing { self.id.clone() }
+  pub fn id(&self) -> String {
+    match &self.id {
+      Some(id) => id.clone().to_string().replace("users:", ""),
+      None => String::new()
+    }
+  }
   pub fn username(&self) -> String { self.username.clone() }
   pub fn email(&self) -> String { self.email.clone() }
   pub fn first_name(&self) -> String { self.first_name.clone() }
   pub fn last_name(&self) -> String { self.last_name.clone() }
   pub fn date_of_birth(&self) -> String { self.date_of_birth.clone() }
-  //pub fn friends(&self) -> Vec<String> { self.friends.clone() }
+  pub fn friends(&self) -> Vec<String> { self.friends.clone() }
   
   pub fn image(&self) -> String {
     match &self.image {
@@ -105,17 +110,18 @@ impl User {
     if last_name.chars().count() > LAST_NAME_MAX_LENGTH { err.push(UserParseError::LastNameIsTooLong) };
 
     let age: usize;
-    let naive_date: NaiveDate; // f this
+    let valid_date: NaiveDate; // f this
+
     match NaiveDate::parse_from_str(&date_of_birth, "%F") {
       Ok(inner) => {
-        naive_date = inner;
+        valid_date = inner;
         age = ((Utc::now().date_naive() - inner).num_days() / 365) as usize;
         if age < MINIMUM_AGE { err.push(UserParseError::DateOfBirthIsTooNear) }
         else if age > MAXIMUM_AGE { err.push(UserParseError::DateOfBirthIsTooFar) };
       },
       Err(_) => {
         err.push(UserParseError::InvalidDateOfBirth);
-        naive_date = NaiveDate::default();
+        valid_date = NaiveDate::default()
       }
     };
 
@@ -128,17 +134,21 @@ impl User {
       }
     };
 
+    let friends = vec!();
+
     logging::log!("[{}] [poivre-axum] user parse ok, sending to db...", &timestamp);
 
     Ok (
       User {
+        id: None,
         image,
         username,
         email,
         password,
         first_name,
         last_name,
-        date_of_birth: naive_date,
+        date_of_birth: valid_date.to_string(),
+        friends
       }
     )
   }

@@ -8,7 +8,7 @@ use surrealdb::{
         Ws
     }
 };
-use crate::resources::user_builder::UserBuilder;
+//use crate::resources::user_builder::UserBuilder;
 
 /// Initiate a SurrealDB Client statically, so it can be accessed globally. The actual connection
 /// is made in connect_database.
@@ -36,17 +36,17 @@ pub async fn connect_database() {
             Ok(()) => logging::log!("[{}] [poivre-axum] Using namespace dev, database dev.", chrono::Local::now().format(DATE_FORMAT)),
             Err(e) => logging::log!("[{}] [poivre-axum] Unable to access namespace or database.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
     };
-    match SURREALDB
-        .delete::<Vec<UserBuilder>>("users")
-        .await {
-            Ok(_) => logging::log!("[{}] [poivre-axum] Purged table users.", chrono::Local::now().format(DATE_FORMAT)),
-            Err(e) => logging::log!("[{}] [poivre-axum] Unable to purge table users.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
-    };
+    //match SURREALDB
+    //    .delete::<Vec<UserBuilder>>("users")
+    //    .await {
+    //        Ok(_) => logging::log!("[{}] [poivre-axum] Purged table users.", chrono::Local::now().format(DATE_FORMAT)),
+    //        Err(e) => logging::log!("[{}] [poivre-axum] Unable to purge table users.\n{}", chrono::Local::now().format(DATE_FORMAT), e)
+    //};
 }
 
 
 pub async fn setup_database() {
-    let scaffold_tables = "
+/*  let scaffold_tables = "
         BEGIN TRANSACTION;
             DEFINE TABLE users SCHEMAFULL;
                 DEFINE FIELD email ON TABLE users TYPE string
@@ -80,11 +80,21 @@ pub async fn setup_database() {
                 image: 'NoImage',
                 first_name: 'Thalles',
                 last_name: 'Rodrigues',
-                date_of_birth: '26/07/1993',
+                date_of_birth: '1993-07-26',
                 friends: []
             };
         COMMIT TRANSACTION;
         ";
+*/
+    let scaffold_tables = "
+        BEGIN TRANSACTION;
+            DEFINE TABLE users;
+            DEFINE TABLE items;
+            DEFINE TABLE cuisines;
+            DEFINE TABLE preferences;
+            DEFINE TABLE is_ingredient_of;
+        COMMIT TRANSACTION;
+    ";
 
     match SURREALDB
         .query(scaffold_tables)

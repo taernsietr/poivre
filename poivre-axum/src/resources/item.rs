@@ -1,5 +1,6 @@
 use std::iter::Iterator;
 use serde::{Serialize, Deserialize};
+use surrealdb::sql::Thing;
 use super::category::Category;
 use crate::resources::shared::{
   ItemName,
@@ -11,7 +12,7 @@ use crate::resources::shared::{
 /// An item from the database; as such, it must have an ID
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub struct Item {
-  id: String,
+  id: Option<Thing>,
   image: Image,
   name: ItemName,
   category: Category,
@@ -47,15 +48,21 @@ impl PoivreTableRow for Item {
 }
 
 impl PoivreCard for Item {
-  fn url(&self) -> String { format!("/items/{}", self.id()) }
+  //fn url(&self) -> String { format!("/items/{}", self.id()) }
+  fn url(&self) -> String { format!("/items/{}", "0000") }
   fn img(&self) -> String { self.image() }
-  fn alt_text(&self) -> String { format!("image for the item {}, {}", self.id(), self.name()) }
+  fn alt_text(&self) -> String { format!("image for the item {}", self.name()) }
   fn card_name(&self) -> String { self.name() }
 }
 
 // TODO: determine if Vec<String> getters should return the actual vec or a joined string
 impl Item {
-  pub fn id(&self) -> String { self.id.clone() }
+  pub fn id(&self) -> String {
+    match &self.id {
+      Some(id) => id.clone().to_string().replace("items:", ""),
+      None => String::new()
+    }
+  }
   pub fn category(&self) -> String { self.category.to_string() }
   pub fn description(&self) -> String { self.description.clone() }
   pub fn descriptors(&self) -> String { self.descriptors.clone().join(", ") }

@@ -7,7 +7,7 @@ use crate::{
         user::SignUp
     },
     resources::{
-        user_builder::{UserBuilder, UserParseError},
+        user_errors::UserParseError,
         user::User
     }, resources::shared::Image
 };

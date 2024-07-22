@@ -10,7 +10,7 @@ use crate::{
     item::get_all_items
   },
   resources::{
-     item::{Item,ItemBuilder},
+     item::Item,
      user::User,
      shared::PoivreTableRow
   }
