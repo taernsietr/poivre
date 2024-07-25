@@ -28,10 +28,8 @@ pub enum ItemName {
 
 impl From<String> for ItemName {
   fn from(value: String) -> Self {
-    //let trimmed = value.trim().to_string();
     let split = value
       .trim()
-      .to_string()
       .split(" ,")
       .map(|str| str.trim().to_string())
       .collect::<Vec<String>>();

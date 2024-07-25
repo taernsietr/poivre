@@ -6,11 +6,11 @@ use crate::resources::shared::Displayable;
 #[component]
 fn NavbarItem(href: &'static str, inner_html: &'static str) -> impl IntoView {
   view! {
-    <A href={href}>
-      <div class="flex-initial border-4 border-solid border-black-200 p-2 mx-2 my-6 bg-orange-500 hover:bg-orange-100 hover:fg-orange-950 transition duration-300 ease-in-out">
-        {inner_html}
-      </div>
-    </A>
+  <A href={href}>
+    <div class="flex-initial border-4 border-solid border-black-200 p-2 mx-2 my-6 bg-orange-500 hover:bg-orange-100 hover:fg-orange-950 transition duration-300 ease-in-out">
+      {inner_html}
+    </div>
+  </A>
   }
 }
 
@@ -28,14 +28,14 @@ pub fn Navbar(entries: Vec<(&'static str, &'static str)>) -> impl IntoView {
         />
         {
           entries
-            .into_iter()
-            .map(|entry| view! {
-                <NavbarItem
-                  href={entry.1}
-                  inner_html={entry.0}
-                />
-            })
-            .collect_view()
+          .into_iter()
+          .map(|entry| view! {
+            <NavbarItem
+              href={entry.1}
+              inner_html={entry.0}
+            />
+          })
+          .collect_view()
         }
       </div>
     </nav>

@@ -2,6 +2,7 @@ use leptos::*;
 use leptos_router::*;
 use std::fmt::Debug;
 use wasm_bindgen::UnwrapThrowExt;
+use surrealdb::sql::Thing;
 use crate::{
   db::setup::SURREALDB,
   resources::{
@@ -11,6 +12,7 @@ use crate::{
   }
 };
 
+/// Parameters for querying an item by its SurrealDB ID
 #[derive(Params, PartialEq)]
 struct ItemQueryById {
   pub id: Option<String>
@@ -41,27 +43,37 @@ pub async fn add_item(
   associated_cuisines: Vec<String>
 ) -> Result<(), ServerFnError> {
 
-    let form_data = Item::new(
-      name,
-      image,
-      category,
-      description,
-      descriptors,
-      associated_cuisines
-    )?;
+  let form_data = Item::new(
+    name,
+    image,
+    category,
+    description,
+    descriptors,
+    associated_cuisines
+  )?;
 
-    let response: Result<Vec<Item>,surrealdb::Error> = SURREALDB
-      .create("items")
-      .content(form_data)
-      .await;
-    
-    Ok(())
+  let response: Result<Vec<Item>,surrealdb::Error> = SURREALDB
+    .create("items")
+    .content(form_data)
+    .await;
+  
+  Ok(())
 }
 
 /// Server endpoint for updating (editing) a database item.
 #[server(UpdateItem)]
-pub async fn update_item() -> Result<(), ServerFnError> {
-  todo!()
+pub async fn update_item(
+  id: Thing,
+  name: Option<String>,
+  image: Option<Image>,
+  category: Option<Category>,
+  description: Option<String>,
+  descriptors: Option<Vec<String>>,
+  associated_cuisines: Option<Vec<String>>
+) -> Result<(), ServerFnError> {
+  let item_id = get_item().await?;
+
+  Ok(())
 }
 
 /// Server endpoint for getting a single item. Can fail if an invalid id or no ID is provided, or
