@@ -1,25 +1,46 @@
 use serde::{Serialize,Deserialize};
 
-/// A type implementing this trait is able to convert its contents into a Vec of String, in order to
-/// be iterated over and turned into a HTML table row.
-pub trait PoivreTableRow {
-  fn headers() -> impl Iterator<Item = String>;
-  fn row_values(&self) -> impl Iterator<Item = String>;
-}
-
-/// A type implementing this trait fulfills the criteria for being displayed as a standard display
-/// card
-pub trait PoivreCard: Clone {
+/// A type implementing this trait it able to be rendered as a table row, a display card, or as a
+/// displayable item in general, linking to its description page.
+pub trait Displayable: Clone {
+  /// Returns its id as stored in the database, without its table name prefixed
+  fn id(&self) -> String;
+  /// Returns the url to its description page
   fn url(&self) -> String;
-  fn img(&self) -> String;
+  /// Returns the url to its image; if no image is available, redirects to the default image for
+  /// its type
+  fn image(&self) -> String;
+  /// Returns its name, formatted according to its type
+  fn display_name(&self) -> String;
+  /// Returns the img element alt text, formatted according to its type
   fn alt_text(&self) -> String;
-  fn card_name(&self) -> String;
+  /// Returns header values for a table displaying items of its type
+  fn headers() -> impl Iterator<Item = String>;
+  /// Returns its values as appropriate for displaying as a table row
+  fn row_values(&self) -> impl Iterator<Item = String>;
 }
 
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub enum ItemName {
-  SingleName(String),
-  MultipleName(Vec<String>)
+  Single(String),
+  Multiple(Vec<String>)
+}
+
+impl From<String> for ItemName {
+  fn from(value: String) -> Self {
+    //let trimmed = value.trim().to_string();
+    let split = value
+      .trim()
+      .to_string()
+      .split(" ,")
+      .map(|str| str.trim().to_string())
+      .collect::<Vec<String>>();
+
+    match split.len() {
+      1 => Self::Single(split.concat()),
+      _ => Self::Multiple(split)
+    }
+  }
 }
 
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
@@ -37,9 +58,13 @@ pub enum AttendeeStatus {
 }
 
 pub mod parameters {
+  pub static DEFAULT_ITEM_IMAGE_URL: &str = "default-item.png";
+  pub static DEFAULT_USER_IMAGE_URL: &str = "default-user.png";
+  pub static DEFAULT_CUISINE_IMAGE_URL: &str = "default-cuisine.png";
+
   pub static DATE_FORMAT: &str = "%H:%M:%S";
 
-  // TODO: set the correct characters
+  // TODO: set the correct characters or refactor validation
   pub static ILLEGAL_USERNAME_CHARACTERS: &str = "º°ª§";
   pub static ILLEGAL_PASSWORD_CHARACTERS: &str = "º°ª§";
   pub static FIRST_NAME_MAX_LENGTH: usize = 64;

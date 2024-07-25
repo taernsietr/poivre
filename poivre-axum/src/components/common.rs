@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos_router::A;
-use crate::resources::shared::PoivreCard;
+use crate::resources::shared::Displayable;
 
 /// Navbar item, that is, a button redirecting to another page.
 #[component]
@@ -44,7 +44,7 @@ pub fn Navbar(entries: Vec<(&'static str, &'static str)>) -> impl IntoView {
 
 /// Container for generic cards
 #[component]
-pub fn CardList(cards: Vec<impl PoivreCard + 'static>) -> impl IntoView {
+pub fn CardList(cards: Vec<impl Displayable + 'static>) -> impl IntoView {
   view! {
     <div>
       {
@@ -59,16 +59,16 @@ pub fn CardList(cards: Vec<impl PoivreCard + 'static>) -> impl IntoView {
 
 /// Generic card element for showing entries
 #[component]
-pub fn Card(object: impl PoivreCard + 'static) -> impl IntoView {
+pub fn Card(object: impl Displayable + 'static) -> impl IntoView {
   view! {
     <div>
       <A href={object.url()}>
         <img
           class="" 
-          src={object.img()}
+          src={object.image()}
           alt={object.alt_text()}
         />
-        <p>{object.card_name()}</p>
+        <p>{object.display_name()}</p>
       </A>
     </div>
   }

@@ -12,14 +12,14 @@ use crate::{
   resources::{
      item::Item,
      user::User,
-     shared::PoivreTableRow
+     shared::Displayable
   }
 };
 
 #[component]
 pub fn AdminDashboard() -> impl IntoView {
   view! {
-    <Title text="Poivre - Admin"/>
+    <Title text="Poivre - Administrator Dashboard"/>
     <PoivreTable fetcher=get_all_items caption="Items" />
     <PoivreTable fetcher=get_all_users caption="Users"/>
   }
@@ -27,16 +27,16 @@ pub fn AdminDashboard() -> impl IntoView {
 
 /// A table row for a list of entries queried from the database.
 #[component]
-pub fn PoivreTableRow(row: impl PoivreTableRow + 'static) -> impl IntoView {
+pub fn PoivreTableRow(row: impl Displayable + 'static) -> impl IntoView {
   view! {
-  <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4 hover:bg-orange-400">
-    {
-      row
-        .row_values()
-        .map(|field| view! { <td class="align-left">{ field }</td> })
-        .collect_view()
-    }
-  </tr>
+    <tr class="bg-orange-200 border-4 border-solid border-black-200 p-4 hover:bg-orange-400">
+      {
+        row
+          .row_values()
+          .map(|field| view! { <td class="align-left">{ field }</td> })
+          .collect_view()
+      }
+    </tr>
   }
 }
 
@@ -44,7 +44,7 @@ pub fn PoivreTableRow(row: impl PoivreTableRow + 'static) -> impl IntoView {
 pub fn PoivreTable<T,U,E>(fetcher: impl Fn() -> T + 'static, caption: &'static str) -> impl IntoView
 where
   E: Debug + 'static,
-  U: Clone + Debug + PoivreTableRow + 'static,
+  U: Clone + Debug + Displayable + 'static,
   T: Future<Output = Result<Vec<U>,E>> + 'static,
   Result<Vec<U>,E>: Serializable + Clone
 {
@@ -64,15 +64,15 @@ where
           }
         </tr>
       </thead>
-        {
-          move || resource.get()
-            .map(|data| {
-              data.unwrap()
+      {
+        move || resource.get()
+          .map(|data| {
+            data.unwrap()
               .into_iter()
               .map(|row| view! { <PoivreTableRow row=row.clone() /> })
               .collect_view()
-          })
-        }
+        })
+      }
     </table>
   </Suspense>
   }

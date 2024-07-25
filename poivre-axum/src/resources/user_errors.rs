@@ -1,46 +1,35 @@
-use std::{
-  error::Error,
-  fmt
-};
+//use std::{error::Error, fmt};
+use thiserror::Error;
 use serde::{Serialize,Deserialize};
 use crate::resources::shared::parameters::*;
 
-#[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
+#[derive(Error,Clone,Debug,Serialize,Deserialize,PartialEq)]
 pub enum UserParseError {
+  #[error("Invalid email")]
   InvalidEmail,
+  #[error("Username contains invalid characters")]
   UsernameContainsInvalidCharacters,
+  #[error("Password contains invalid characters")]
   PasswordContainsInvalidCharacters,
+  #[error("Invalid date of birth")]
   InvalidDateOfBirth,
+  #[error("You must be at least 14 to create an account")]
   DateOfBirthIsTooNear,
+  #[error("Are you really over 120 years old?")]
   DateOfBirthIsTooFar,
+  #[error("First name exceeds maximum length {}", FIRST_NAME_MAX_LENGTH)]
   NameIsTooLong,
+  #[error("Last name exceeds maximum length {}", LAST_NAME_MAX_LENGTH)]
   LastNameIsTooLong,
+  #[error("Username is too long")]
   UsernameIsTooLong,
+  #[error("Password is too long")]
   PasswordIsTooLong,
+  #[error("Username is too short")]
   UsernameIsTooShort,
+  #[error("Password is too short")]
   PasswordIsTooShort,
+  #[error("Multiple errors found.")]
   MultipleErrors
-}
-
-impl Error for UserParseError {}
-
-impl fmt::Display for UserParseError {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    match self {
-      UserParseError::InvalidEmail => write!(f, "Invalid email"),
-      UserParseError::InvalidDateOfBirth => write!(f, "Invalid date of birth"),
-      UserParseError::UsernameContainsInvalidCharacters => write!(f, "Username contains invalid characters"),
-      UserParseError::UsernameIsTooLong => write!(f, "Username is too long"),
-      UserParseError::NameIsTooLong => write!(f, "First name exceeds maximum length {FIRST_NAME_MAX_LENGTH}"),
-      UserParseError::LastNameIsTooLong => write!(f, "Last name exceeds maximum length {LAST_NAME_MAX_LENGTH}"),
-      UserParseError::UsernameIsTooShort => write!(f, "Username is too short"),
-      UserParseError::PasswordContainsInvalidCharacters => write!(f, "Password contains invalid characters"),
-      UserParseError::PasswordIsTooLong => write!(f, "Password is too long"),
-      UserParseError::PasswordIsTooShort => write!(f, "Password is too short"),
-      UserParseError::DateOfBirthIsTooNear => write!(f, "You must be at least 14 to create an account"),
-      UserParseError::DateOfBirthIsTooFar => write!(f, "Are you really over 120 years old?"),
-      UserParseError::MultipleErrors => write!(f, "Multiple errors found.")
-    }
-  }
 }
 

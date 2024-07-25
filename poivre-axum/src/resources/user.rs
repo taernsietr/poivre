@@ -8,8 +8,7 @@ use crate::resources::{
   user_errors::UserParseError,
   shared::{
     Image,
-    PoivreCard,
-    PoivreTableRow,
+    Displayable,
     parameters::*
   }
 };
@@ -27,47 +26,7 @@ pub struct User {
   friends: Vec<String>
 }
 
-impl PoivreTableRow for User {
-  fn headers() -> impl Iterator<Item = String> {
-    vec!(
-      "ID",
-      "Image",
-      "Username",
-      "email",
-      "First Name",
-      "Last Name",
-      "Date of Birth"
-    ).into_iter().map(|x| x.to_string())
-  }
-
-  fn row_values(&self) -> impl Iterator<Item = String> {
-    vec!(
-      self.id(),
-      self.image(),
-      self.username(),
-      self.email(),
-      self.first_name(),
-      self.last_name(),
-      self.date_of_birth(),
-    ).into_iter()
-  }
-}
-
-impl PoivreCard for User {
-  //fn url(&self) -> String { format!("/users/{}", self.id()) }
-  fn url(&self) -> String { format!("/users/{}", "0000") }
-  fn img(&self) -> String { self.image() }
-  fn alt_text(&self) -> String { format!("image for user {} {}", self.first_name(), self.last_name()) }
-  fn card_name(&self) -> String { format!("{} {}", self.first_name(), self.last_name()) }
-}
-
 impl User {
-  pub fn id(&self) -> String {
-    match &self.id {
-      Some(id) => id.clone().id.to_string(),
-      None => String::new()
-    }
-  }
   pub fn username(&self) -> String { self.username.clone() }
   pub fn email(&self) -> String { self.email.clone() }
   pub fn first_name(&self) -> String { self.first_name.clone() }
@@ -75,13 +34,6 @@ impl User {
   pub fn date_of_birth(&self) -> String { self.date_of_birth.clone() }
   pub fn friends(&self) -> Vec<String> { self.friends.clone() }
   
-  pub fn image(&self) -> String {
-    match &self.image {
-      Image::HasImage(url) => url.clone(),
-      Image::NoImage => String::new()
-    }
-  }
-
   pub fn new(
     image: Image,
     username: String,
@@ -93,6 +45,7 @@ impl User {
   ) -> Result<User, UserParseError> {
     let mut err = Vec::<UserParseError>::new();
     let timestamp = Local::now().format(DATE_FORMAT);
+
     let email_regex = Regex::new(r"[\w.+-]+@\w+\.\w{2,}").unwrap();
     let username_regex = Regex::new(ILLEGAL_USERNAME_CHARACTERS).unwrap();
     let password_regex = Regex::new(ILLEGAL_PASSWORD_CHARACTERS).unwrap();
@@ -151,6 +104,51 @@ impl User {
         friends
       }
     )
+  }
+}
+
+impl Displayable for User {
+  fn id(&self) -> String {
+    match &self.id {
+      Some(id) => id.clone().id.to_string(),
+      None => String::new()
+    }
+  }
+
+  fn url(&self) -> String { format!("/users/{}", self.id()) }
+
+  fn image(&self) -> String {
+    match &self.image {
+      Image::HasImage(url) => url.clone(),
+      Image::NoImage => String::new()
+    }
+  }
+
+  fn display_name(&self) -> String { format!("{} {}", self.first_name(), self.last_name()) }
+  fn alt_text(&self) -> String { format!("image for user {}", self.username()) }
+
+  fn headers() -> impl Iterator<Item = String> {
+    vec!(
+      "ID",
+      "Image",
+      "Username",
+      "email",
+      "First Name",
+      "Last Name",
+      "Date of Birth"
+    ).into_iter().map(|x| x.to_string())
+  }
+
+  fn row_values(&self) -> impl Iterator<Item = String> {
+    vec!(
+      self.id(),
+      self.image(),
+      self.username(),
+      self.email(),
+      self.first_name(),
+      self.last_name(),
+      self.date_of_birth(),
+    ).into_iter()
   }
 }
 
