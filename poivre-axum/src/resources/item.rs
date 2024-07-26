@@ -55,6 +55,18 @@ impl Item {
       }
     )
   }
+
+  pub fn update(&mut self) -> Self {
+    Item::new(
+      Some(self.id()),
+      name,
+      image,
+      category,
+      description,
+      descriptors,
+      associated_cuisines
+    )
+  }
 }
 
 impl Displayable for Item {

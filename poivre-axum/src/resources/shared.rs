@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use serde::{Serialize,Deserialize};
 
 /// A type implementing this trait it able to be rendered as a table row, a display card, or as a
@@ -26,6 +28,18 @@ pub enum ItemName {
   Multiple(Vec<String>)
 }
 
+#[derive(Clone,Debug,Default,Serialize,Deserialize,PartialEq)]
+pub struct FullName {
+  pub first_name: String,
+  pub last_name: String
+}
+
+impl FullName {
+  pub fn is_empty(&self) -> bool {
+    self.first_name.is_empty() && self.last_name.is_empty()
+  }
+}
+
 impl From<String> for ItemName {
   fn from(value: String) -> Self {
     let split = value
@@ -41,14 +55,22 @@ impl From<String> for ItemName {
   }
 }
 
-#[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
+impl Default for ItemName {
+  fn default() -> Self {
+    ItemName::Single(String::new())
+  }
+}
+
+#[derive(Clone,Debug,Default,Serialize,Deserialize,PartialEq)]
 pub enum Image {
+  #[default]
   NoImage,
   HasImage(String)
 }
 
-#[derive(Clone,Debug,Serialize,Deserialize,PartialEq)]
+#[derive(Clone,Debug,Default,Serialize,Deserialize,PartialEq)]
 pub enum AttendeeStatus {
+  #[default]
   Pending,
   Rejected,
   Accepted,
@@ -56,22 +78,23 @@ pub enum AttendeeStatus {
 }
 
 pub mod parameters {
-  pub static DEFAULT_ITEM_IMAGE_URL: &str = "default-item.png";
-  pub static DEFAULT_USER_IMAGE_URL: &str = "default-user.png";
-  pub static DEFAULT_CUISINE_IMAGE_URL: &str = "default-cuisine.png";
+  pub const DEFAULT_ITEM_IMAGE_URL: &str = "default-item.png";
+  pub const DEFAULT_USER_IMAGE_URL: &str = "default-user.png";
+  pub const DEFAULT_CUISINE_IMAGE_URL: &str = "default-cuisine.png";
 
-  pub static DATE_FORMAT: &str = "%H:%M:%S";
+  pub const DATE_FORMAT: &str = "%H:%M:%S";
 
   // TODO: set the correct characters or refactor validation
-  pub static ILLEGAL_USERNAME_CHARACTERS: &str = "º°ª§";
-  pub static ILLEGAL_PASSWORD_CHARACTERS: &str = "º°ª§";
-  pub static FIRST_NAME_MAX_LENGTH: usize = 64;
-  pub static LAST_NAME_MAX_LENGTH: usize = 64;
-  pub static USERNAME_MAX_LENGTH: usize = 32;
-  pub static USERNAME_MIN_LENGTH: usize = 8;
-  pub static PASSWORD_MAX_LENGTH: usize = 128;
-  pub static PASSWORD_MIN_LENGTH: usize = 8;
-  pub static MAXIMUM_AGE: usize = 120;
-  pub static MINIMUM_AGE: usize = 14;
+  pub const EMAIL_REGEX: &str = r"[\w.+-]+@\w+\.\w{2,}";
+  pub const ILLEGAL_USERNAME_CHARACTERS: &str = "º°ª§";
+  pub const ILLEGAL_PASSWORD_CHARACTERS: &str = "º°ª§";
+  pub const FIRST_NAME_MAX_LENGTH: usize = 64;
+  pub const LAST_NAME_MAX_LENGTH: usize = 64;
+  pub const USERNAME_MAX_LENGTH: usize = 32;
+  pub const USERNAME_MIN_LENGTH: usize = 8;
+  pub const PASSWORD_MAX_LENGTH: usize = 128;
+  pub const PASSWORD_MIN_LENGTH: usize = 8;
+  pub const MAXIMUM_AGE: usize = 120;
+  pub const MINIMUM_AGE: usize = 14;
 }
 

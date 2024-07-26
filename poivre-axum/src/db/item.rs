@@ -29,7 +29,7 @@ pub async fn get_all_items() -> Result<Vec<Item>, ServerFnError> {
         Ok(items)
       },
       Err(e) => Err(ServerFnError::from(e))
-    }
+  }
 }
 
 /// Server endpoint for adding a new database item.

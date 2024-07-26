@@ -6,6 +6,8 @@ use crate::resources::shared::parameters::*;
 pub enum UserParseError {
   #[error("Invalid email")]
   InvalidEmail,
+  #[error("Invalid image url")]
+  InvalidImageUrl,
   #[error("Username contains invalid characters")]
   UsernameContainsInvalidCharacters,
   #[error("Password contains invalid characters")]
@@ -17,7 +19,7 @@ pub enum UserParseError {
   #[error("Are you really over 120 years old?")]
   DateOfBirthIsTooFar,
   #[error("First name exceeds maximum length {}", FIRST_NAME_MAX_LENGTH)]
-  NameIsTooLong,
+  FirstNameIsTooLong,
   #[error("Last name exceeds maximum length {}", LAST_NAME_MAX_LENGTH)]
   LastNameIsTooLong,
   #[error("Username is too long")]
@@ -28,7 +30,19 @@ pub enum UserParseError {
   UsernameIsTooShort,
   #[error("Password is too short")]
   PasswordIsTooShort,
-  #[error("Multiple errors found.")]
-  MultipleErrors
+  #[error("Username cannot be empty")]
+  EmptyUsername,
+  #[error("Email cannot be empty")]
+  EmptyEmail,
+  #[error("Password cannot be empty")]
+  EmptyPassword,
+  #[error("First name cannot be empty")]
+  EmptyFirstName,
+  #[error("Last name cannot be empty")]
+  EmptyLastName,
+  #[error("Date of birth cannot be empty")]
+  EmptyDateOfBirth,
+  #[error("Could not validate user")]
+  UnableToValidateUser
 }
 
