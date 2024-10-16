@@ -1,6 +1,7 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
+use stylance::import_crate_style;
 
 use crate::{
   utils::error_template::{AppError, ErrorTemplate},
@@ -27,8 +28,9 @@ use crate::{
 
 /// Main app component. Contains the Router.
 #[component]
-pub fn App() -> impl IntoView {
-  provide_meta_context();
+pub fn app() -> impl IntoView {
+  stylance::import_crate_style!(style, "./app.modules.scss");
+  provide_meta_context(); // TODO
 
   let navbar_entries = vec!(
     ("Home", ""),
@@ -45,19 +47,18 @@ pub fn App() -> impl IntoView {
       outside_errors.insert_with_default_key(AppError::NotFound);
       view! {
         <ErrorTemplate outside_errors/>
-      }
-      .into_view()
+      }.into_view()
     }>
-      <div class="h-screen max-w-[1920px] border-4 border-solid bg-orange-950 flex flex-col mx-auto mt-24">
+      <div class="page_outer_container">
         <Navbar entries=navbar_entries />
-        <main class="flex flex-col border-4 border-solid bg-orange-300 m-4">
-          <header class="place-self-center">
+        <main>
+          <header>
             <hgroup>
-              <h1 class="text-lg font-medium">"Poivre" <sub><i>"['pwa.vʀ]"</i></sub></h1>
+              <h1>"Poivre"<sub><i>"['pwa.vʀ]"</i></sub></h1>
               <h2>"A platform for mapping culinary preferences and restrictions"</h2>
             </hgroup>
           </header>
-          <div class="flex flex-col border-4 border-solid m-8 p-8">
+          <div class="page_inner_container">
             <Routes>
               <Route path="" view=Home />
               <Route path="admin" view=AdminDashboard />

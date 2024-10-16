@@ -38,6 +38,7 @@ chrono = { version = "0.4.38", features = ["wasmbind"] }
 serde_qs = { version = "0.13.0", features = ["axum", "axum-framework"] }
 web-sys = { version = "0.3.69", features = ["FormData"] }
 aquamarine = "0.5.0"
+stylance = "0.5.1"
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
