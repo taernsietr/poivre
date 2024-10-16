@@ -9,7 +9,7 @@ pub enum ItemParseError {
   #[error("Item name cannot be empty")]
   EmptyItemName,
   #[error("Item description cannot be empty")]
-  EmptyitemDescription,
-  #[error("Multiple errors found.")]
-  MultipleErrors
+  EmptyItemDescription,
+  #[error("Item category cannot be empty")]
+  EmptyItemCategory,
 }

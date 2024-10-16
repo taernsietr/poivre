@@ -62,8 +62,6 @@ codegen-units = 1
 panic = "abort"
 
 [package.metadata.leptos]
-tailwind-input-file = "style/tailwind.css"
-tailwind-config-file = "tailwind.config.js"
 style-file = "style/main.scss"
 output-name = "poivre-axum"
 site-root = "target/site"

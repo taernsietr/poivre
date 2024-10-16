@@ -28,44 +28,43 @@ pub struct Item {
 
 // TODO: determine if Vec<String> getters should return the actual vec or a joined string
 impl Item {
+  pub fn new() -> Item {
+    Item {
+      id: None,
+      image: Image::default(),
+      name: ItemName::default(),
+      category: Category::default(),
+      description: String::new(),
+      descriptors: Vec::<String>::new(),
+      associated_cuisines: Vec::<String>::new()
+    }
+  }
+
   pub fn category(&self) -> String { self.category.to_string() }
   pub fn description(&self) -> String { self.description.clone() }
   pub fn descriptors(&self) -> String { self.descriptors.clone().join(", ") }
   pub fn associated_cuisines(&self) -> String { self.associated_cuisines.clone().join(", ") }
-  pub fn new(
-    name: impl Into<ItemName>,
-    image: Image,
-    category: Category,
-    description: String,
-    descriptors: Vec<String>,
-    associated_cuisines: Vec<String>
-  ) -> Result<Item, ItemParseError> {
-    let timestamp = Local::now().format(DATE_FORMAT);
-    logging::log!("[{}] [poivre-axum] item parse ok, sending to db...", &timestamp);
 
-    Ok (
-      Item {
-        id: None,
-        name: name.into(),
-        image,
-        category,
-        description,
-        descriptors,
-        associated_cuisines
-      }
-    )
+  /// Sets the display image for the Item. Any string will be set, while an empty input will set
+  /// the image to NoImage. Invalid URLs are not checked.
+  pub fn set_image(mut self, image: String) -> Self {
+    if image.is_empty() { self.image = Image::NoImage }
+    else { self.image = Image::HasImage(image); }
+    self
   }
 
-  pub fn update(&mut self) -> Self {
-    Item::new(
-      Some(self.id()),
-      name,
-      image,
-      category,
-      description,
-      descriptors,
-      associated_cuisines
-    )
+  pub fn set_name(mut self, name: String) -> Self {
+    match name.chars().count() {
+      0 => eprintln!("{}", ItemParseError::EmptyItemName),
+      _ => { self.name = ItemName::from(name) }
+    }
+    self
+  }
+  
+  pub fn set_category(mut self, category: String) -> Self {
+    if category.is_empty() { eprintln!("{}", ItemParseError::EmptyItemCategory) }
+    else { self.category = Category::from(category) };
+    self
   }
 }
 

@@ -48,13 +48,5 @@ pub async fn sign_up(
       Err(err.into())
     }
   }
-
-  //let response: Result<Vec<User>,surrealdb::Error> = setup::SURREALDB
-  //SURREALDB
-  //  .create("users")
-  //  .content(form_data)
-  //  .await;
-  
-  //Ok(())
 }
 

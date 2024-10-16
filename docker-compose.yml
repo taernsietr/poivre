@@ -1,7 +1,7 @@
 services:
   surrealdb:
     image: surrealdb/surrealdb:latest
-    container_name: database
+    container_name: poivre-database
     ports:
       - "8000:8000"
     command: 
@@ -10,12 +10,13 @@ services:
       - --user=root
       - --pass=root
       - --allow-guests
-    restart: always
+    restart: no 
+    volumes:
+      - $(pwd)/poivre-db:/data
   # app:
-  #   # image: poivre-axum:latest
-  #   image: poivre/poivre-axum
-  #   build: ./poivre-axum
-  #   container_name: server
+  #   build: $(pwd)/poivre-axum
+  #   # image: poivre/poivre-axum:latest
+  #   container_name: poivre-app
   #   ports:
   #     - 3000:3000
   #   command:
