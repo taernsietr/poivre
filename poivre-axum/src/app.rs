@@ -16,11 +16,6 @@ use crate::{
       ItemDescription,
       AddItem,
       EditItem,
-    },
-    event::{
-      CreateEvent,
-      EventInvite,
-      EventDetails,
     }
   },
   components::common::Navbar
@@ -29,7 +24,7 @@ use crate::{
 /// Main app component. Contains the Router.
 #[component]
 pub fn app() -> impl IntoView {
-  stylance::import_crate_style!(style, "./app.modules.scss");
+  import_crate_style!(style, "src/styles/app.modules.scss");
   provide_meta_context(); // TODO
 
   let navbar_entries = vec!(
@@ -49,7 +44,7 @@ pub fn app() -> impl IntoView {
         <ErrorTemplate outside_errors/>
       }.into_view()
     }>
-      <div class="page_outer_container">
+      <div class="page-outer-container">
         <Navbar entries=navbar_entries />
         <main>
           <header>
@@ -58,7 +53,7 @@ pub fn app() -> impl IntoView {
               <h2>"A platform for mapping culinary preferences and restrictions"</h2>
             </hgroup>
           </header>
-          <div class="page_inner_container">
+          <div class="page-inner-container">
             <Routes>
               <Route path="" view=Home />
               <Route path="admin" view=AdminDashboard />

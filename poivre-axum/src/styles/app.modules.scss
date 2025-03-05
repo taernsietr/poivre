@@ -1,0 +1,108 @@
+@mixin flex-col {
+  display: flex;
+  flex-direction: flex-column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: flex-row;
+}
+
+@mixin default-border {
+  border: solid 4px black;
+}
+
+main {
+  @include flex-col;
+  @include default-border;
+  background-color: rgb(253, 186, 116);
+  margin: 4px;
+}
+
+header {
+  place-self: center
+}
+
+h1 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+nav {
+  @include default-border;
+  width: 100%;
+  justify-content: space-around;
+  background-color: rgb(249, 115, 22);
+}
+
+.page-outer-container {
+  @include flex-col;
+  @include default-border;
+  height: 100vh;
+  max-width: 1920px;
+  background-color: rgb(67, 20, 7);
+  margin: 24px auto 0 auto;
+}
+
+.page-inner-container {
+  @include flex-col;
+  @include default-border;
+  margin: 8px;
+  padding: 8px;
+}
+
+.form-row {
+  @include flex-row;
+}
+
+.form-entry {
+  flex: 1 1 auto;
+  margin: 4px;
+  padding: 4px;
+}
+
+.table {
+  @include default-border;
+  margin: 4px;
+}
+
+.table-row {
+  @include default-border;
+  background-color: rgb(254, 215, 170);
+  padding: 4px;
+
+  td, th {
+    text-align: left
+  }
+}
+
+.table-row:hover {
+  background-color: rgb(251, 146, 60);
+}
+
+.navbar-img {
+  flex: 0 1 auto;
+  padding: 2px;
+  margin: 2px;
+}
+
+.navbar-links-container {
+  @include flex-row;
+}
+
+.navbar-item {
+  @include default-border;
+  flex: 0 1 auto;
+  padding: 2px;
+  margin: 6px 2px;
+  background-color: rgb(249, 115, 22);
+}
+
+.navbar-item:hover {
+  background-color: rgb(255, 237, 213);
+  color: rgb(67, 20, 7);
+  transition: ease-in-out;
+  transition-duration: 300ms;
+}
+

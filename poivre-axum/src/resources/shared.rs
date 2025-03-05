@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 use serde::{Serialize,Deserialize};
 
 /// A type implementing this trait it able to be rendered as a table row, a display card, or as a
@@ -7,17 +5,23 @@ use serde::{Serialize,Deserialize};
 pub trait Displayable: Clone {
   /// Returns its id as stored in the database, without its table name prefixed
   fn id(&self) -> String;
+
   /// Returns the url to its description page
   fn url(&self) -> String;
+
   /// Returns the url to its image; if no image is available, redirects to the default image for
   /// its type
   fn image(&self) -> String;
+
   /// Returns its name, formatted according to its type
   fn display_name(&self) -> String;
+
   /// Returns the img element alt text, formatted according to its type
   fn alt_text(&self) -> String;
+
   /// Returns header values for a table displaying items of its type
   fn headers() -> impl Iterator<Item = String>;
+
   /// Returns its values as appropriate for displaying as a table row
   fn row_values(&self) -> impl Iterator<Item = String>;
 }

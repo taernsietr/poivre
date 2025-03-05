@@ -1,8 +1,6 @@
 use leptos::*;
 use leptos_router::*;
 use leptos_meta::Title;
-use std::fmt::Debug;
-use wasm_bindgen::UnwrapThrowExt;
 use crate::db::item::{GetItem,AddItem};
 use crate::resources::shared::Displayable;
 
@@ -19,21 +17,21 @@ pub fn AddItem() -> impl IntoView {
   view! {
     <Title text="Poivre - Add Item"/>
     <ActionForm action=add_item>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Image: "
         <input
           type="text"
           name="item-image"
         />
       </label>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Item Name: "
         <input
           type="text"
           name="item-name"
         />
       </label>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Category: "
         <select name="item-category" >
           <option value="ingredient">Ingredient</option>
@@ -41,14 +39,14 @@ pub fn AddItem() -> impl IntoView {
           <option value="beverage">Beverage</option>
         </select>
       </label>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Description: "
         <input
           type="text"
           name="item-description"
         />
       </label>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Descriptors: "
         <input
           type="text"
@@ -56,7 +54,7 @@ pub fn AddItem() -> impl IntoView {
           multiple
         />
       </label>
-      <label class="m-4 p-4 flex-auto">
+      <label class="form-entry">
         "Associated Cuisines: "
         <input
           type="text"
@@ -92,7 +90,8 @@ pub fn ItemDescription() -> impl IntoView {
         <p>{ item.display_name() }</p>
         <p>{ item.category() }</p>
         <p>{ item.description() }</p>
-        <p>{ item.descriptors() }</p>
+        <p>{ item.tags() }</p>
+        <p>{ item.cuisines() }</p>
       </div>
     </Suspense>
   }
